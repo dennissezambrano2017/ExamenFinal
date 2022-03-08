@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
-public class Country {
+import java.io.Serializable;
+
+public class Country implements Serializable {
     private String name;
     private String nameCapital;
     private String codeISO2;
@@ -8,18 +10,20 @@ public class Country {
     private String codeISO3;
     private String codeFIPS;
     private String telPrefix;
-    private String center;
-    private String geoWest;
-    private String geoEast;
-    private String geoNorth;
-    private String geoSouth;
+    private String center0;
+    private String center1;
+    private double geoWest;
+    private double geoEast;
+    private double geoNorth;
+    private double geoSouth;
+    private String linkban;
 
     public Country() {
     }
 
     public Country(String name, String nameCapital, String codeISO2, String codeISONum,
-                   String codeISO3, String codeFIPS, String telPrefix, String center,
-                   String geoWest, String geoEast, String geoNorth, String geoSouth) {
+                   String codeISO3, String codeFIPS, String telPrefix, String center0,String center1,
+                   double geoWest, double geoEast, double geoNorth, double geoSouth,String linkban) {
         this.name = name;
         this.nameCapital = nameCapital;
         this.codeISO2 = codeISO2;
@@ -27,11 +31,13 @@ public class Country {
         this.codeISO3 = codeISO3;
         this.codeFIPS = codeFIPS;
         this.telPrefix = telPrefix;
-        this.center = center;
+        this.center0 = center0;
+        this.center1 = center1;
         this.geoWest = geoWest;
         this.geoEast = geoEast;
         this.geoNorth = geoNorth;
         this.geoSouth = geoSouth;
+        this.linkban = linkban;
     }
 
     public String getName() {
@@ -90,43 +96,55 @@ public class Country {
         this.telPrefix = telPrefix;
     }
 
-    public String getCenter() {
-        return center;
+    public String getCenter0() {
+        return center0;
     }
 
-    public void setCenter(String center) {
-        this.center = center;
+    public void setCenter0(String center0) {
+        this.center0 = center0;
     }
 
-    public String getGeoWest() {
+    public String getCenter1() {
+        return center1;
+    }
+
+    public void setCenter1(String center1) {
+        this.center1 = center1;
+    }
+
+    public double getGeoWest() {
         return geoWest;
     }
 
-    public void setGeoWest(String geoWest) {
+    public void setGeoWest(double geoWest) {
         this.geoWest = geoWest;
     }
 
-    public String getGeoEast() {
+    public double getGeoEast() {
         return geoEast;
     }
 
-    public void setGeoEast(String geoEast) {
+    public void setGeoEast(double geoEast) {
         this.geoEast = geoEast;
     }
 
-    public String getGeoNorth() {
+    public double getGeoNorth() {
         return geoNorth;
     }
 
-    public void setGeoNorth(String geoNorth) {
+    public void setGeoNorth(double geoNorth) {
         this.geoNorth = geoNorth;
     }
 
-    public String getGeoSouth() {
+    public double getGeoSouth() {
         return geoSouth;
     }
 
-    public void setGeoSouth(String geoSouth) {
+    public void setGeoSouth(double geoSouth) {
         this.geoSouth = geoSouth;
     }
+
+    public String getLinkban() { return linkban; }
+
+    public void setLinkban(String linkban) { this.linkban = linkban; }
 }

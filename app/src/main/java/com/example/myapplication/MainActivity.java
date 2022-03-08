@@ -60,13 +60,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttonMap.setVisibility(View.GONE);
+
         country = new Country();
         Result = findViewById(R.id.Name);
         camara = findViewById(R.id.btn_TomarFoto);
         galeria = findViewById(R.id.button2);
         imagenVi = findViewById(R.id.image);
         buttonMap = (Button) findViewById(R.id.map);
+        buttonMap.setVisibility(View.GONE);
         camara.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -169,7 +170,9 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonArray2 = jsonArray.getJSONObject(inicial);
                             country.setName(jsonArray2.getString("Name"));
                             country.setTelPrefix(jsonArray2.getString("TelPref"));
-                            country.setCenter(jsonArray2.getString("GeoPt"));
+                            JSONArray jsonArrayGtp = jsonArray2.getJSONArray("GeoPt");
+                            country.setCenter0(jsonArrayGtp.getString(0));
+                            country.setCenter1(jsonArrayGtp.getString(1));
 
                             JSONObject countryCodes = jsonArray2.getJSONObject("CountryCodes");
                             country.setCodeISO2(countryCodes.getString("iso2"));
@@ -181,13 +184,15 @@ public class MainActivity extends AppCompatActivity {
                             country.setNameCapital(capital.getString("Name"));
 
                             JSONObject geoRectangle = jsonArray2.getJSONObject("GeoRectangle");
-                            country.setGeoWest(countryCodes.getString("West"));
-                            country.setGeoEast(countryCodes.getString("East"));
-                            country.setGeoNorth(countryCodes.getString("North"));
-                            country.setGeoSouth(countryCodes.getString("South"));
+                            country.setGeoWest(Double.parseDouble(geoRectangle.getString("West")));
+                            country.setGeoEast(Double.parseDouble(geoRectangle.getString("East")));
+                            country.setGeoNorth(Double.parseDouble(geoRectangle.getString("North")));
+                            country.setGeoSouth(Double.parseDouble(geoRectangle.getString("South")));
 
+                            country.setLinkban("http://www.geognos.com/api/en/countries/flag/"+inicial+".png");
                             Result.setKeyListener(null);
-                            Result.setText("Nombre del Pais: "+country.getCenter());
+                            Result.setText("Nombre del Pais: "+country.getName());
+                            buttonMap.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -201,11 +206,14 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
     private void Map(Country countryObj){
-        Intent intent = new Intent(MainActivity.this, MapActivity.class);
-        Bundle b = new Bundle();
-        b.putString("countryData", countryObj.toString());
-        intent.putExtras(b);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(MainActivity.this, MapActivity.class);
+            intent.putExtra("countryData",countryObj);
+            startActivity(intent);
+        }catch (Exception E){
+            E.printStackTrace();
+        }
+
     }
 
 }
