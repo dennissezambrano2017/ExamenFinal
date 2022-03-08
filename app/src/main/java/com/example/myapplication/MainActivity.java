@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
             }
             String[] classe = {"AR","BE","BR","CO","CR","EC","ES","FR","GB","JP","MX","PT","SE","UY"};
 
-            Result.setText("Pais: "+classe[maxPos]);
-            //stringRequest(classe[maxPos]);
+            //Result.setText("Pais: "+classe[maxPos]);
+            stringRequest(classe[maxPos]);
 
             // Releases model resources if no longer used.
             model.close();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void stringRequest(String inicial){
         Log.d("name","si ingresa"+inicial);
-        String url ="http://www.geognos.com/api/en/countries/info/"+inicial+".json";
+        String url ="http://www.geognos.com/api/en/countries/info/all.json";
         ArrayList<String> lstDatos = new ArrayList<String>();
         /*JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -182,19 +182,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONObject jsonObject1 = new JSONObject(response.toString());
-                            JSONArray jsonArray = jsonObject1.getJSONArray("Results");
-                            for (int i=0; i <jsonArray.length();i++){
-                                JSONObject data = jsonArray.getJSONObject(i);
-                                lstDatos.add(data.getString("Name").toString());
-                                Log.d("name",lstDatos.get(0));
-                            }
+                            JSONObject jsonArray = response.getJSONObject("Results");
+                            JSONObject jsonArray2 = jsonArray.getJSONObject(inicial);
+                            String nombre= jsonArray2.getString("Name");
                             Result.setKeyListener(null);
-                            Result.setText("Name: "+lstDatos.toString());
-                            Log.d("name",lstDatos.get(0));
-                            Log.d("name",lstDatos.toString());
-                            //textView.setKeyListener(null);
-                            //textView.setText();
+                            Result.setText("Nombre del Pais: "+nombre);
+                            Log.d("name",nombre);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -206,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
+
         requestQueue.add(request);
     }
 
