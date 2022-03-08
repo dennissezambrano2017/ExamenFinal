@@ -137,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
             }
             String[] classe = {"AR","BE","BR","CO","CR","EC","ES","FR","GB","JP","MX","PT","SE","UY"};
 
-            stringRequest(classe[maxPos]);
+            Result.setText("Pais: "+classe[maxPos]);
+            //stringRequest(classe[maxPos]);
 
             // Releases model resources if no longer used.
             model.close();
