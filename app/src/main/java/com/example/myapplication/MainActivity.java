@@ -54,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
     ImageView imagenVi;
     int imageSize = 224;private
     RequestQueue requestQueue;
+    Country country;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        country = new Country();
         Result = findViewById(R.id.Name);
         camara = findViewById(R.id.btn_TomarFoto);
         galeria = findViewById(R.id.button2);
@@ -137,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             }
             String[] classe = {"AR","BE","BR","CO","CR","EC","ES","FR","GB","JP","MX","PT","SE","UY"};
 
-            //Result.setText("Pais: "+classe[maxPos]);
             stringRequest(classe[maxPos]);
 
             // Releases model resources if no longer used.
@@ -150,33 +151,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("name","si ingresa"+inicial);
         String url ="http://www.geognos.com/api/en/countries/info/all.json";
         ArrayList<String> lstDatos = new ArrayList<String>();
-        /*JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            //JSONArray jsonArray = response.getJSONArray("Results");
-                            for (int i=0; i <response.length();i++){
-                                JSONObject data = new JSONObject(response.get(i).toString());
-                                lstDatos.add(data.getString("Name").toString());
-                                Log.d("name",lstDatos.get(0));
-                            }
-                            Result.setKeyListener(null);
-                            Result.setText("Name: "+lstDatos.toString());
-                            Log.d("name",lstDatos.get(0));
-                            Log.d("name",lstDatos.toString());
-                            //textView.setKeyListener(null);
-                            //textView.setText();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });*/
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -184,10 +158,27 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonArray = response.getJSONObject("Results");
                             JSONObject jsonArray2 = jsonArray.getJSONObject(inicial);
-                            String nombre= jsonArray2.getString("Name");
+                            country.setName(jsonArray2.getString("Name"));
+                            country.setTelPrefix(jsonArray2.getString("TelPref"));
+                            country.setCenter(jsonArray2.getString("GeoPt"));
+
+                            JSONObject countryCodes = jsonArray2.getJSONObject("CountryCodes");
+                            country.setCodeISO2(countryCodes.getString("iso2"));
+                            country.setCodeISO3(countryCodes.getString("iso3"));
+                            country.setCodeISONum(countryCodes.getString("isoN"));
+                            country.setCodeFIPS(countryCodes.getString("fips"));
+
+                            JSONObject capital = jsonArray2.getJSONObject("Capital");
+                            country.setNameCapital(capital.getString("Name"));
+
+                            JSONObject geoRectangle = jsonArray2.getJSONObject("GeoRectangle");
+                            country.setGeoWest(countryCodes.getString("West"));
+                            country.setGeoEast(countryCodes.getString("East"));
+                            country.setGeoNorth(countryCodes.getString("North"));
+                            country.setGeoSouth(countryCodes.getString("South"));
+
                             Result.setKeyListener(null);
-                            Result.setText("Nombre del Pais: "+nombre);
-                            Log.d("name",nombre);
+                            Result.setText("Nombre del Pais: "+country.getCenter());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -195,12 +186,9 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //textView.append(String.valueOf("ERROR"));
                 error.printStackTrace();
             }
         });
-
-
         requestQueue.add(request);
     }
 
