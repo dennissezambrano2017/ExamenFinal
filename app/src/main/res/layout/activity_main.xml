@@ -42,14 +42,15 @@
         android:id="@+id/Name"
         android:layout_below="@id/image"
         android:layout_marginTop="10sp"></TextView>
+
     <Button
+        android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Visualizar Map y Descripción"
-        android:textStyle="bold"
-        android:id="@+id/map"
         android:layout_below="@id/Name"
-        android:layout_marginTop="10sp"></Button>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10sp"
+        android:text="Visualizar Map y Descripción"
+        android:textStyle="bold"></Button>
 
 </RelativeLayout>
